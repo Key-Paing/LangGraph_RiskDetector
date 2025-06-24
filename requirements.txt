@@ -1,0 +1,6 @@
+langgraph
+langchain
+pdfplumber
+pypdf
+langchain-google-vertexai
+streamlit 
