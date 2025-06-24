@@ -5,6 +5,7 @@ from langchain.prompts import PromptTemplate
 from langchain_google_vertexai import VertexAI
 from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
+from google.auth import default
 import time
 import json
 
