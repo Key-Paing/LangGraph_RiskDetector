@@ -40,7 +40,7 @@ def extract_text_node(state: ContractRiskState) -> ContractRiskState:
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/pyaephyopaing/Desktop/ET.Verdict/MulitAgent_LangGraph/botexpert-459607-26d1eb471087.json"
 
 llm = VertexAI(
-    project = "botexpert-459607",
+    project = "machine-translation-001",
     location = "us-central1",
     model = "gemini-2.5-pro-preview-05-06",
 )
