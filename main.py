@@ -10,7 +10,7 @@ import json
 
 raw = st.secrets["google"]["credentials"]
 service_account_info = json.loads(raw) 
-credentials = Credentials.from_service_account_info(service_account_info)
+credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
 
 
 class ContractRiskState(TypedDict):
