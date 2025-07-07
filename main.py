@@ -13,7 +13,7 @@ import json
 HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
 llm = HuggingFaceHub(
-    repo_id = "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    repo_id = "google/flan-ul2",
     huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN
 )
 
