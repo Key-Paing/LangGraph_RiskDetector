@@ -6,14 +6,14 @@ from langchain_google_vertexai import VertexAI
 from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
-from langchain.llms import HuggingFaceHub
+from langchain_huggingface import HuggingFaceEndpoint
 import time
 import json
 
 HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
-llm = HuggingFaceHub(
-    repo_id="google/flan-t5-xl",
+llm = HuggingFaceEndpoint(
+    repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1",
     huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN
 )
 
