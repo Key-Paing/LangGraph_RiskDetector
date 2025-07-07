@@ -7,20 +7,26 @@ from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
 from langchain_community.llms import HuggingFaceHub
-from langchain_community.llms import HuggingFacePipeline
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from transformers import pipeline
+# from langchain_community.llms import HuggingFacePipeline
+# from transformers import AutoTokenizer, AutoModelForCausalLM
+# from transformers import pipeline
+from huggingface_hub import InferenceClient
+
 import time
 import json
 
-tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
+HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
-pipe = pipeline("text2text-generation", model=model, tokenizer=tokenizer, device=0)
+client = InferenceClient(model="mistralai/Mixtral-8x7B-Instruct-v0.1", token=HUGGINGFACEHUB_API_TOKEN)
 
-llm = HuggingFacePipeline(pipeline=pipe)
+# tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN)
+# model = AutoModelForCausalLM.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN, torch_dtype="auto", device_map="auto")
 
-# HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
+# pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+# llm = HuggingFacePipeline(pipeline=pipe)
+
+
 
 # llm = HuggingFaceHub(
 #     repo_id = "google/flan-t5-xl",
@@ -147,7 +153,15 @@ def detect_risks_node(state: ContractRiskState) -> ContractRiskState:
         contract_text=state["contract_text"],
         rules_text = state["rules_text"]
         ).to_string()
-    response = llm.invoke(formatted_prompt)
+    # response = llm.invoke(formatted_prompt)
+
+    response = client.text_generation(
+        prompt=formatted_prompt,
+        max_new_tokens=1024,
+        temperature=0.3,
+        top_p=0.9,
+        stop_sequences=["\n\n"]
+    )
 
     return {
         **state,
