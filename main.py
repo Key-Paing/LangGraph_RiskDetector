@@ -14,8 +14,7 @@ HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
 llm = HuggingFaceEndpoint(
     repo_id="google/flan-t5-xl",
-    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
-    model_kwargs={"temperature": 0.5, "max_new_tokens": 512}
+    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN
 
 )
 
