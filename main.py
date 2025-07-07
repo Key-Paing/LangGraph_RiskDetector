@@ -13,8 +13,10 @@ import json
 HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
 llm = HuggingFaceEndpoint(
-    repo_id="mistralai/Mixtral-8x7B-Instruct-v0.1",
-    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN
+    repo_id="google/flan-t5-xl",
+    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
+    model_kwargs={"temperature": 0.5, "max_new_tokens": 512}
+
 )
 
 # Set up Google Cloud credentials
