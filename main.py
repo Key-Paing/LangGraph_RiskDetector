@@ -7,20 +7,30 @@ from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
 from langchain_community.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFacePipeline
+from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
 import json
 
-HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
+tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1")
+model = AutoModelForCausalLM.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1")
 
-llm = HuggingFaceHub(
-    repo_id = "google/flan-t5-xl",
-    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
-    model_kwargs={
-        "temperature": 0.5,
-        "max_new_tokens": 512
-    }
+pipe = pipeline("text-generation", model="mistralai/Mixtral-8x7B-Instruct-v0.1")
 
-)
+llm = HuggingFacePipeline(pipeline=pipe)
+
+# HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
+
+# llm = HuggingFaceHub(
+#     repo_id = "google/flan-t5-xl",
+#     huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
+#     model_kwargs={
+#         "temperature": 0.5,
+#         "max_new_tokens": 512
+#     }
+
+# )
 
 # Set up Google Cloud credentials
 # raw = st.secrets["google"]["credentials"]
