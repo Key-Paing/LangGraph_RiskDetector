@@ -9,14 +9,11 @@ from google.auth import default
 from langchain_community.llms import HuggingFaceHub
 from langchain_community.llms import HuggingFacePipeline
 from transformers import pipeline
-from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
 import json
 
-tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1")
-model = AutoModelForCausalLM.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1")
 
-pipe = pipeline("text-generation", model="mistralai/Mixtral-8x7B-Instruct-v0.1")
+pipe = pipeline("text-generation", model="google/flan-ul2")
 
 llm = HuggingFacePipeline(pipeline=pipe)
 
