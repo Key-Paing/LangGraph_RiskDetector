@@ -6,12 +6,28 @@ from langchain_google_vertexai import VertexAI
 from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
+from langchain_community.llms import HuggingFaceHub
 import time
 import json
 
-raw = st.secrets["google"]["credentials"]
-service_account_info = json.loads(raw) 
-credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
+
+llm = HuggingFaceHub(
+    repo_id = "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN
+)
+
+# Set up Google Cloud credentials
+# raw = st.secrets["google"]["credentials"]
+# service_account_info = json.loads(raw) 
+# credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+# llm = VertexAI(
+#     project = "machine-translation-001",
+#     location = "us-central1",
+#     model = "gemini-2.5-pro-preview-05-06",
+#     credentials=credentials
+# )
 
 
 class ContractRiskState(TypedDict):
@@ -40,12 +56,7 @@ def extract_text_node(state: ContractRiskState) -> ContractRiskState:
 
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/pyaephyopaing/Desktop/ET.Verdict/MulitAgent_LangGraph/botexpert-459607-26d1eb471087.json"
 
-llm = VertexAI(
-    project = "machine-translation-001",
-    location = "us-central1",
-    model = "gemini-2.5-pro-preview-05-06",
-    credentials=credentials
-)
+
 
 
 prompt = PromptTemplate(
