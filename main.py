@@ -167,7 +167,7 @@ def detect_risks_node(state: ContractRiskState) -> ContractRiskState:
 
     return {
         **state,
-        "risks_detected": response
+        "risks_detected": response.generated_text
     }
 
 
