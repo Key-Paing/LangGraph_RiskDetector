@@ -8,15 +8,12 @@ from google.oauth2.service_account import Credentials
 from google.auth import default
 from langchain_community.llms import HuggingFaceHub
 from langchain_community.llms import HuggingFacePipeline
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import pipeline
 import time
 import json
 
-tokenizer = AutoTokenizer.from_pretrained("google/flan-ul2")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-ul2")
 
-pipe = pipeline("text-generation", model="google/flan-ul2")
+pipe = pipeline("text-generation", model="google/flan-t5-base")
 
 llm = HuggingFacePipeline(pipeline=pipe)
 
