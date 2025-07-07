@@ -6,7 +6,7 @@ from langchain_google_vertexai import VertexAI
 from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
-from langchain_huggingface import HuggingFaceEndpoint
+from langchain_community.llms import HuggingFaceEndpoint
 import time
 import json
 
