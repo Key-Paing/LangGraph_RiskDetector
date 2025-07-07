@@ -7,3 +7,4 @@ streamlit
 google-auth
 google-auth-oauthlib
 huggingface_hub
+langchain-community
