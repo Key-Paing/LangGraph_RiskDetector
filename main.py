@@ -23,8 +23,9 @@ import json
 #Set up For Groq Cloud
 GROQ_API_KEY = st.secrets["groq"]["api_key"]
 llm = ChatGroq(
-    model="llama-3.1-8b-instant",
+    model="mistral-saba-24b",
     api_key=GROQ_API_KEY,
+    temperature=0.3,
     max_tokens=2048
 )
 
