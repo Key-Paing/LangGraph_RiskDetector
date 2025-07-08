@@ -6,49 +6,27 @@ from langchain_google_vertexai import VertexAI
 from langgraph.graph import StateGraph, END
 from google.oauth2.service_account import Credentials
 from google.auth import default
-from langchain_community.llms import HuggingFaceHub
+# from langchain_community.llms import HuggingFaceHub
 # from langchain_community.llms import HuggingFacePipeline
 # from transformers import AutoTokenizer, AutoModelForCausalLM
 # from transformers import pipeline
-from huggingface_hub import InferenceClient
+# from huggingface_hub import InferenceClient
+from langchain_groq import ChatGroq
 
 import time
 import json
 
-HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
+# HUGGINGFACEHUB_API_TOKEN = st.secrets["huggingface"]["api_token"]
 
-client = InferenceClient(model="mistralai/Mixtral-8x7B-Instruct-v0.1", token=HUGGINGFACEHUB_API_TOKEN)
+# client = InferenceClient(model="mistralai/Mixtral-8x7B-Instruct-v0.1", token=HUGGINGFACEHUB_API_TOKEN)
 
-# tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN)
-# model = AutoModelForCausalLM.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN, torch_dtype="auto", device_map="auto")
+#Set up For Groq Cloud
+GROQ_API_KEY = st.secrets["groq"]["api_key"]
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    api_key=GROQ_API_KEY
+)
 
-# pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
-
-# llm = HuggingFacePipeline(pipeline=pipe)
-
-
-
-# llm = HuggingFaceHub(
-#     repo_id = "google/flan-t5-xl",
-#     huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
-#     model_kwargs={
-#         "temperature": 0.5,
-#         "max_new_tokens": 512
-#     }
-
-# )
-
-# Set up Google Cloud credentials
-# raw = st.secrets["google"]["credentials"]
-# service_account_info = json.loads(raw) 
-# credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
-
-# llm = VertexAI(
-#     project = "machine-translation-001",
-#     location = "us-central1",
-#     model = "gemini-2.5-pro-preview-05-06",
-#     credentials=credentials
-# )
 
 
 class ContractRiskState(TypedDict):
@@ -72,10 +50,7 @@ def extract_text_node(state: ContractRiskState) -> ContractRiskState:
     }
 
 
-# Set up Google Cloud credentials
-# Creating prompt and inference the output
 
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/pyaephyopaing/Desktop/ET.Verdict/MulitAgent_LangGraph/botexpert-459607-26d1eb471087.json"
 
 
 
@@ -153,16 +128,16 @@ def detect_risks_node(state: ContractRiskState) -> ContractRiskState:
         contract_text=state["contract_text"],
         rules_text = state["rules_text"]
         ).to_string()
-    # response = llm.invoke(formatted_prompt)
+    response = llm.invoke(formatted_prompt)
 
-    response = client.text_generation(
-        formatted_prompt,
-        max_new_tokens=1024,
-        temperature=0.3,
-        top_p=0.9,
-        do_sample=True,
-        stop_sequences=["\n\n"]
-    )
+    # response = client.text_generation(
+    #     formatted_prompt,
+    #     max_new_tokens=1024,
+    #     temperature=0.3,
+    #     top_p=0.9,
+    #     do_sample=True,
+    #     stop_sequences=["\n\n"]
+    # )
 
     return {
         **state,
@@ -217,3 +192,46 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Set up Google Cloud credentials
+# raw = st.secrets["google"]["credentials"]
+# service_account_info = json.loads(raw) 
+# credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+# llm = VertexAI(
+#     project = "machine-translation-001",
+#     location = "us-central1",
+#     model = "gemini-2.5-pro-preview-05-06",
+#     credentials=credentials
+# )
+
+
+
+
+# Set up Google Cloud credentials
+# Creating prompt and inference the output
+
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/pyaephyopaing/Desktop/ET.Verdict/MulitAgent_LangGraph/botexpert-459607-26d1eb471087.json"
+
+
+
+
+# tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN)
+# model = AutoModelForCausalLM.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", use_auth_token=HUGGINGFACEHUB_API_TOKEN, torch_dtype="auto", device_map="auto")
+
+# pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+# llm = HuggingFacePipeline(pipeline=pipe)
+
+
+
+# llm = HuggingFaceHub(
+#     repo_id = "google/flan-t5-xl",
+#     huggingfacehub_api_token=HUGGINGFACEHUB_API_TOKEN,
+#     model_kwargs={
+#         "temperature": 0.5,
+#         "max_new_tokens": 512
+#     }
+
+# )
