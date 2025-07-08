@@ -23,7 +23,7 @@ import json
 #Set up For Groq Cloud
 GROQ_API_KEY = st.secrets["groq"]["api_key"]
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model="llama-3.1-8b-instant",
     api_key=GROQ_API_KEY
 )
 
