@@ -155,19 +155,18 @@ def detect_risks_node(state: ContractRiskState) -> ContractRiskState:
         ).to_string()
     # response = llm.invoke(formatted_prompt)
 
-    response = client.conversational(
-        messages=[
-        {"role": "user", "content": formatted_prompt}
-    ],
+    response = client.text_generation(
+        formatted_prompt,
         max_new_tokens=1024,
         temperature=0.3,
         top_p=0.9,
+        do_simple=True,
         stop_sequences=["\n\n"]
     )
 
     return {
         **state,
-        "risks_detected": response.generated_text
+        "risks_detected": response
     }
 
 
