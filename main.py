@@ -24,7 +24,8 @@ import json
 GROQ_API_KEY = st.secrets["groq"]["api_key"]
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
-    api_key=GROQ_API_KEY
+    api_key=GROQ_API_KEY,
+    max_tokens=2048
 )
 
 
