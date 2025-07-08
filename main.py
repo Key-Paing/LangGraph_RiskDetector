@@ -11,7 +11,6 @@ from google.auth import default
 # from transformers import AutoTokenizer, AutoModelForCausalLM
 # from transformers import pipeline
 # from huggingface_hub import InferenceClient
-from langchain_groq import ChatGroq
 
 import time
 import json
@@ -21,14 +20,25 @@ import json
 # client = InferenceClient(model="mistralai/Mixtral-8x7B-Instruct-v0.1", token=HUGGINGFACEHUB_API_TOKEN)
 
 #Set up For Groq Cloud
-GROQ_API_KEY = st.secrets["groq"]["api_key"]
-llm = ChatGroq(
-    model="mistral-saba-24b",
-    api_key=GROQ_API_KEY,
-    temperature=0.3,
-    max_tokens=2048
-)
+# GROQ_API_KEY = st.secrets["groq"]["api_key"]
+# llm = ChatGroq(
+#     model="mistral-saba-24b",
+#     api_key=GROQ_API_KEY,
+#     temperature=0.3,
+#     max_tokens=2048
+# )
 
+# Set up Google Cloud credentials
+raw = st.secrets["google"]["credentials"]
+service_account_info = json.loads(raw) 
+credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+llm = VertexAI(
+    project = "machine-translation-001",
+    location = "us-central1",
+    model = "gemini-2.5-pro-preview-05-06",
+    credentials=credentials
+)
 
 
 class ContractRiskState(TypedDict):
@@ -196,17 +206,7 @@ if __name__ == "__main__":
     main()
 
 
-# Set up Google Cloud credentials
-# raw = st.secrets["google"]["credentials"]
-# service_account_info = json.loads(raw) 
-# credentials = Credentials.from_service_account_info(service_account_info, scopes=['https://www.googleapis.com/auth/cloud-platform'])
 
-# llm = VertexAI(
-#     project = "machine-translation-001",
-#     location = "us-central1",
-#     model = "gemini-2.5-pro-preview-05-06",
-#     credentials=credentials
-# )
 
 
 
