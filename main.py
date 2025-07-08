@@ -160,7 +160,7 @@ def detect_risks_node(state: ContractRiskState) -> ContractRiskState:
         max_new_tokens=1024,
         temperature=0.3,
         top_p=0.9,
-        do_simple=True,
+        do_sample=True,
         stop_sequences=["\n\n"]
     )
 
